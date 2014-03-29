@@ -1,5 +1,9 @@
 [![Build Status](https://travis-ci.org/RallySoftware/jarvis-core.png)](https://travis-ci.org/RallySoftware/jarvis-core)
 
+# FORK NOTE
+
+This is a fork in which we have removed Java and Groovy plugin support.
+
 # jarvis-core
 
 Jarvis core is the runtime library used when creating a Jarvis instance. It contains all the necessary components to scan for plugins and initialize threads for interacting with flows. For more information on running an instance of
@@ -48,7 +52,6 @@ See [INTRO](https://github.com/RallySoftware/jarvis-core/blob/master/INTRO.md) f
 ```clojure
 [org.clojure/clojure "1.5.0"]
 [com.rallydev/clj-flowdock "1.1.0"]
-[org.codehaus.groovy/groovy-all "2.1.0"]
 [org.clojure/java.classpath "0.2.0"]
 [org.clojure/tools.logging "0.2.6"]
 [org.clojure/tools.reader "0.7.5"]

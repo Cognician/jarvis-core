@@ -3,9 +3,7 @@
             [clojure.java.classpath :as classpath]
             [clojure.string :as s]
             [clojure.tools.logging :as log]
-            [clojure.set :as set])
-  (:import [com.rallydev.jarvis Groovy Plugin]
-           [groovy.lang Closure]))
+            [clojure.set :as set]))
 
 (def ^:const plugin-pattern #".*jarvis/plugins/.*")
 (def not-nil (complement nil?))
@@ -26,20 +24,6 @@
 
 (defn command-name [plugin]
   (:command (meta plugin)))
-
-(defprotocol PluginAdapter
-  "Provides adapters for plugins from different JVM languages"
-  (add-plugin [plugin plugin-metadata]))
-
-(extend-type Plugin
-  PluginAdapter
-  (add-plugin [plugin plugin-metadata]
-    (save-plugin #(.invoke plugin %) plugin-metadata)))
-
-(extend-type Closure
-  PluginAdapter
-  (add-plugin [plugin plugin-metadata]
-    (save-plugin #(.call plugin (object-array [%])) plugin-metadata)))
 
 (defn plugin? [file]
   (->> file
@@ -94,7 +78,6 @@
   (log/info "Loading plugin: " plugin)
   (cond
     (.endsWith plugin ".class") (load-java-plugin plugin)
-    (.endsWith plugin ".groovy") (Groovy/loadGroovyPlugin (str "/" plugin))
     (.endsWith plugin ".clj") (require-clojure-plugin plugin)))
 
 (defn- load-clojure-plugins []
