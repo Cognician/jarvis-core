@@ -7,7 +7,7 @@
                  [com.rallydev/clj-flowdock "1.2.2"]
                  [org.clojure/java.classpath "0.2.0"]
                  [org.clojure/tools.logging "0.2.6"]
-                 [org.clojure/tools.reader "0.7.5"]
+                 [org.clojure/tools.reader "0.8.3"]
                  [clj-http "0.7.2"]
                  [fs "1.3.2"]
                  [ch.qos.logback/logback-classic "1.0.9"]]
