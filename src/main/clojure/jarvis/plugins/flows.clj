@@ -4,8 +4,10 @@
             [clj-flowdock.api.flow :as flow]
             [clojure.string :as s]))
 
-(defn ^{:description "Prints all flows that I am listening to."
+(defn ^{:description "
+Prints all flows the bot is currently on."
         :command "list-flows"
+        :section "FlowDock"
         :author "Jonathan Chauncey"
         :plugin true}
   list-flows [message content-vec]

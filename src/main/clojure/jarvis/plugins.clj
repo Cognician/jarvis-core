@@ -11,7 +11,8 @@
 (def plugins-atom (atom #{}))
 (def meta-mapping {"command" :command
                    "description" :description
-                   "author" :author})
+                   "author" :author
+                   "section" :section})
 
 (defn- apply-meta [f meta-data]
   (-> (zipmap (.keySet meta-data) (.values meta-data))
