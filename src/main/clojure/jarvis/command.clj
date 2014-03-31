@@ -2,26 +2,22 @@
   (:require [jarvis.util :as util]
             [clj-flowdock.api.message :as m]
             [clojure.string :as s]
-            [clojure.walk :as walk]
             [clojure.tools.logging :as log]))
 
 (declare get-user-id-from-message get-user-ids-from-tags user->id)
 
 (defn tell [message plugin]
-  (when-let [reply (plugin (walk/keywordize-keys message) (util/message-content->vec message))]
+  (when-let [reply (plugin message (util/message-content->vec message))]
     (let [user-ids (get-user-ids-from-tags message)]
-      (log/info "Plugin:" (m/content message) "replied:" (str "'" reply "'"))
       (m/send-private-messages user-ids reply))))
 
 (defn private-message [message plugin]
-  (when-let [reply (plugin (walk/keywordize-keys message) (util/message-content->vec message))]
+  (when-let [reply (plugin message (util/message-content->vec message))]
     (let [user-id (get-user-id-from-message message)]
-      (log/info "Plugin:" (m/content message) "replied to user:" user-id " with content:" (str "'" reply "'"))
       (m/send-private-message user-id reply))))
 
 (defn reply [message plugin]
-  (when-let [reply (plugin (walk/keywordize-keys message) (util/message-content->vec message))]
-    (log/info "Plugin:" (m/content message) "replied:" (str "'" reply "'"))
+  (when-let [reply (plugin message (util/message-content->vec message))]
     (m/reply message reply)))
 
 (defn tell-command? [message]
