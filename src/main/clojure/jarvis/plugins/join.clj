@@ -4,7 +4,6 @@
             [clj-flowdock.api.flow :as f]
             [clj-flowdock.api.user :as user]
             [clj-flowdock.api.message :as m]
-            [cogbot.log :as log]
             [clojure.string :as s]))
 
 (declare join-flows join-flow)
@@ -19,7 +18,6 @@ Join the flow."
   (join-flows message @plugins/plugins-atom))
 
 (defn- join-flows [message plugins]
-  (log/info message)
   (let [flows (rest (s/split (m/content message) #"\s"))
         reply (map #(join-flow % plugins) flows)]
     (str "" (s/join "\n" reply))))
