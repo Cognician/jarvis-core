@@ -9,26 +9,26 @@
 
 (defn- env-variable [name]
   (-> (System/getenv)
-    (get name)))
+      (get name)))
 
 (defn- build-string [content]
   (str "[" content "]"))
 
 (defn config-property
   ([name]
-    (config-property name nil))
+   (config-property name nil))
   ([name default-value]
-    (if-let [env-value (env-variable name)]
-      env-value
-      (if-let [system-value (System/getProperty name)]
-        system-value
-        default-value))))
+   (if-let [env-value (env-variable name)]
+     env-value
+     (if-let [system-value (System/getProperty name)]
+       system-value
+       default-value))))
 
 (defn enhance-message [message]
   (-> message
-    (assoc "parent" (m/parent-message message))
-    (assoc "user" (user/get (m/user message)))
-    debug/print-message))
+      (assoc "parent" (m/parent-message message))
+      (assoc "user" (user/get (m/user message)))
+      debug/print-message))
 
 (defn close-flow-connection [flow-connection]
   (log/info (str "Closing flow connection - " (.flow-id flow-connection)))
@@ -36,12 +36,17 @@
   (f/block-user (.flow-id flow-connection) (get (user/me) "id"))
   (.close flow-connection))
 
+(defn safe-read [string]
+  (try
+    (edn/read-string string)
+    (catch NumberFormatException _ (str string))))
+
 (defn message-content->vec [message]
   (vec (map str (-> message
-            (get "content")
-            (subs 1)
-            build-string
-            (edn/read-string)))))
+                    (get "content")
+                    (subs 1)
+                    build-string
+                    safe-read))))
 
 (defn test-env? []
   (= "TEST" (config-property "ENVIRONMENT" false)))
